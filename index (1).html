@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIX BURGER | Онлайн-заказ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header>
+            <div class="logo-block">
+                <h1 id="lang-logo">MIX BURGER</h1>
+                <p id="lang-tags">БУРГЕРЫ • ШАУРМА • ПИЦЦА</p>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleLanguage()" style="font-weight: bold; font-size: 12px;" id="lang-toggle-btn">
+                    RU
+                </button>
+                <button class="icon-btn" onclick="openCartModal()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                    <div class="badge" id="cart-badge" style="display: none;">0</div>
+                </button>
+            </div>
+        </header>
+
+        <div class="hero-section">
+            <div class="status-badge">
+                <div class="status-dot"></div>
+                <span id="lang-status">Открыто · принимаем заказы</span>
+            </div>
+            <h2 class="hero-title" id="lang-hero-title">Голод? <br><span>MIX BURGER</span> уже жарит.</h2>
+            <p class="hero-desc" id="lang-hero-desc">Сочные бургеры, фирменная шаурма и хрустящая пицца. Закажи онлайн — забери сам или мы привезем.</p>
+            
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="scrollToMenu()" id="lang-btn-menu">Открыть меню</button>
+                <button class="btn-outline">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg>
+                    <span id="lang-btn-qr">QR-код заведения</span>
+                </button>
+            </div>
+
+            <div class="info-links">
+                <span>🏠 <span id="lang-info-pickup">Самовывоз</span></span>
+                <span>🚴 <span id="lang-info-delivery">Доставка</span></span>
+                <span>💬 <span id="lang-info-wa">Через WhatsApp</span></span>
+            </div>
+
+            <div class="combo-card">
+                <div class="hit-tag">HIT</div>
+                <h3 id="lang-top-title">Топ заказ</h3>
+                <h4 id="lang-combo-name">Супер комбо</h4>
+                <ul>
+                    <li>• Пицца «4 сыра» (1 шт)</li>
+                    <li>• Сырный бургер (2 шт)</li>
+                    <li>• Шаурма классик (2 шт)</li>
+                    <li>• Фри (2 порции) + наггетсы (2 порции)</li>
+                    <li>• Соус на выбор + Pepsi 2л</li>
+                </ul>
+                <div class="combo-footer">
+                    <div class="price">1499</div>
+                    <div class="combo-meta" id="lang-combo-meta">Для компании 3–4 чел.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section" id="menu-anchor">
+            <h3 class="menu-title" id="lang-menu-heading">Выбирайте и добавляйте</h3>
+            
+            <div class="categories-scroll">
+                <button class="cat-btn active" onclick="switchCategory('shaurma', this)" id="cat-shaurma">Шаурма</button>
+                <button class="cat-btn" onclick="switchCategory('burgers', this)" id="cat-burgers">Бургеры</button>
+                <button class="cat-btn" onclick="switchCategory('pite', this)" id="cat-pite">Пите</button>
+                <button class="cat-btn" onclick="switchCategory('pizza', this)" id="cat-pizza">Пицца</button>
+                <button class="cat-btn" onclick="switchCategory('snacks', this)" id="cat-snacks">Закуски</button>
+                <button class="cat-btn" onclick="switchCategory('drinks', this)" id="cat-drinks">Напитки</button>
+                <button class="cat-btn" onclick="switchCategory('combos', this)" id="cat-combos">Комбо</button>
+            </div>
+
+            <div class="products-grid" id="products-container"></div>
+        </div>
+
+        <div class="floating-cart" id="floating-cart" onclick="openCartModal()">
+            <span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path></svg>
+                <span id="lang-float-cart">Корзина</span> · <span id="floating-count">0</span>
+            </span>
+            <span id="floating-total">0 С</span>
+        </div>
+
+        <div class="modal-overlay" id="cart-modal">
+            <div class="modal-window">
+                <div class="modal-header">
+                    <h2 id="lang-cart-title">Ваш заказ</h2>
+                    <button class="close-btn" onclick="closeModal('cart-modal')">&times;</button>
+                </div>
+                <div class="cart-items-list" id="cart-items-container"></div>
+                <button class="btn-primary" style="width: 100%; display: flex; justify-content: space-between;" onclick="openCheckoutModal()">
+                    <span id="lang-btn-checkout">Оформить заказ</span>
+                    <span id="cart-modal-total">0 С</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="checkout-modal">
+            <div class="modal-window">
+                <div class="modal-header">
+                    <h2 id="lang-checkout-title">Оформление заказа</h2>
+                    <button class="close-btn" onclick="closeModal('checkout-modal')">&times;</button>
+                </div>
+
+                <div class="delivery-tabs">
+                    <button class="tab-btn active" id="tab-pickup" onclick="setDeliveryMethod('pickup')">Самовывоз</button>
+                    <button class="tab-btn" id="tab-delivery" onclick="setDeliveryMethod('delivery')">Доставка</button>
+                </div>
+
+                <div class="pickup-info-box" id="pickup-info">
+                    📍 <span id="lang-pickup-address">Заберите заказ по адресу: г. Бишкек, ул. Примерная, 1</span>
+                </div>
+
+                <div class="form-group" id="address-field" style="display: none;">
+                    <label id="lang-lbl-address">Адрес доставки *</label>
+                    <input type="text" class="form-control" id="input-address" placeholder="Улица, дом, кв., этаж, ориентир">
+                </div>
+
+                <div class="form-group">
+                    <label id="lang-lbl-name">Ваше имя *</label>
+                    <input type="text" class="form-control" id="input-name" placeholder="Имя">
+                </div>
+                <div class="form-group">
+                    <label id="lang-lbl-phone">Телефон *</label>
+                    <input type="tel" class="form-control" id="input-phone" placeholder="+996 555 123 456" value="+996 ">
+                </div>
+                <div class="form-group">
+                    <label id="lang-lbl-comment">Сказать повару</label>
+                    <input type="text" class="form-control" id="input-comment" placeholder="Без лука, побольше соуса и т.п.">
+                </div>
+
+                <div class="qr-section">
+                    <div class="qr-header-title">
+                        <span id="lang-qr-payment-title">Оплата по QR</span>
+                        <span class="total-bold" id="qr-total-display">0 С</span>
+                    </div>
+                    <p class="qr-instruction" id="lang-qr-instruction">Отсканируйте QR-код в приложении банка и переведите сумму заказа. Затем прикрепите фото чека ниже.</p>
+                    
+                    <div class="qr-wrapper">
+                        <svg width="180" height="180" viewBox="0 0 100 100" style="display: block; background: #fff; padding: 4px;">
+                            <path d="M0,0 h28 v28 h-28 z M4,4 v20 h20 v-20 z M8,8 h12 v12 h-12 z" fill="#222"/>
+                            <path d="M72,0 h28 v28 h-28 z M76,4 v20 h20 v-20 z M80,8 h12 v12 h-12 z" fill="#222"/>
+                            <path d="M0,72 h28 v28 h-28 z M4,76 v20 h20 v-20 z M8,80 h12 v12 h-12 z" fill="#222"/>
+                            <path d="M76,76 h12 v12 h-12 z M80,80 h4 v4 h-4 z" fill="#222"/>
+                            <path d="M32,4 h4 v4 h-4 z M40,0 h8 v4 h-8 z M52,4 h4 v8 h-4 z M60,0 h8 v4 h-8 z M32,12 h4 v4 h-4 z M44,12 h4 v8 h-4 z M64,8 h4 v8 h-4 z M36,20 h8 v4 h-8 z M56,20 h8 v4 h-8 z M0,32 h4 v8 h-4 z M12,32 h8 v4 h-8 z M24,36 h8 v4 h-8 z M36,32 h4 v4 h-4 z M48,32 h4 v4 h-4 z M56,36 h12 v4 h-12 z M76,32 h8 v4 h-8 z M88,32 h12 v4 h-12 z M8,40 h4 v4 h-4 z M20,44 h4 v4 h-4 z M28,40 h4 v8 h-4 z M40,44 h8 v4 h-8 z M52,40 h4 v4 h-4 z M72,40 h4 v8 h-4 z M84,44 h8 v4 h-4 z M4,48 h8 v4 h-8 z M16,52 h4 v4 h-4 z M32,52 h4 v4 h-4 z M44,48 h4 v4 h-4 z M60,52 h8 v4 h-8 z M80,48 h4 v8 h-4 z M92,52 h4 v4 h-4 z M0,60 h12 v4 h-12 z M24,60 h4 v4 h-4 z M36,64 h4 v4 h-4 z M48,60 h8 v4 h-8 z M64,60 h4 v4 h-4 z M76,64 h12 v4 h-12 z M12,68 h4 v4 h-4 z M28,68 h8 v4 h-8 z M44,68 h4 v4 h-4 z M56,68 h4 v4 h-4 z M68,68 h4 v4 h-4 z M92,68 h4 v4 h-4 z M32,76 h4 v4 h-4 z M40,72 h8 v4 h-8 z M52,76 h4 v12 h-4 z M64,72 h4 v4 h-4 z M36,84 h4 v4 h-4 z M44,84 h8 v4 h-8 z M64,84 h8 v4 h-8 z M32,92 h8 v4 h-8 z M48,92 h4 v4 h-4 z M60,92 h8 v4 h-8 z" fill="#222"/>
+                            <circle cx="50" cy="50" r="13" fill="#fff" />
+                            <circle cx="50" cy="50" r="10" fill="#0079C1" />
+                            <circle cx="50" cy="50" r="8.5" fill="#fff" />
+                            <text x="50" y="53" font-family="sans-serif" font-size="7" font-weight="900" fill="#0079C1" text-anchor="middle">BB</text>
+                        </svg>
+                    </div>
+                    <div class="qr-pay-text">Оплатите сюда / Ушул жерге төлөңүз</div>
+                    
+                    <label style="text-align: left; display: block; margin-bottom: 8px;" id="lang-lbl-receipt">Фото чека об оплате *</label>
+                    <div class="upload-container" onclick="document.getElementById('file-input').click()">
+                        <input type="file" id="file-input" style="display: none;" onchange="handleFileSelect(this)">
+                        <div class="upload-content" id="upload-content-text">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                            <span id="lang-upload-btn">Загрузить фото чека</span>
+                        </div>
+                    </div>
+                    <p class="whatsapp-notice" id="lang-wa-notice">После нажатия «Отправить заказ» откроется WhatsApp с деталями. Прикрепите туда фото чека вручную и отправьте сообщение.</p>
+                </div>
+
+                <div class="summary-row">
+                    <span><span id="lang-summary-items">Позиций</span>: <span id="checkout-count-display">0</span></span>
+                    <span class="total-bold"><span id="lang-summary-total">Итого</span>: <span id="checkout-total-display">0 С</span></span>
+                </div>
+
+                <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="sendOrderToWhatsApp()" id="lang-btn-send">
+                    Отправить заказ в WHATSAPP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
